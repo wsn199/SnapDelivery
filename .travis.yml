@@ -4,8 +4,6 @@ os: linux
 env:
   global:
   - SNAPCRAFT_BUILD_ENVIRONMENT: lxd
-
-
 addons:
   snaps:
   - name: snapcraft
@@ -23,8 +21,10 @@ script:
 - sg lxd -c snapcraft
 - echo " ----Deploy-----"
 - echo $SNAP_TOKEN
-- snapcraft login --with snap.login
+- openssl aes-256-cbc -K $encrypted_a4cd10f8bf07_key -iv $encrypted_a4cd10f8bf07_iv -in hellosnap.enc -out hellosnap -d
+- snapcraft login --with hellosnap
 - snapcraft whoami
 - snapcraft upload --release=edge hello-masahiro_0.1_amd64.snap
 after_failure:
 - sudo journalctl -u snapd
+before_install:
